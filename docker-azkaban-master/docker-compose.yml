@@ -1,0 +1,25 @@
+mariadb:
+    image: mysql:5.7
+    restart: always
+    ports:
+        - "3306:3306"
+    environment:
+        - MYSQL_USER=azkaban
+        - MYSQL_PASSWORD=azkaban
+        - MYSQL_DATABASE=azkaban
+        - MYSQL_ROOT_PASSWORD=liuyanjun
+
+executor:
+    image: puckel/azkaban-executor
+    restart: always
+    links:
+        - mysql_5.7
+
+webserver:
+    image: puckel/azkaban-webserver
+    restart: always
+    ports:
+        - "8443:8443"
+    links:
+        - executor:azkaban-executor
+        - mysql_5.7
